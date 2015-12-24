@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "angular2": "2.0.0-beta.0",
+    "body-parser": "^1.14.2",
+    "bootstrap": "^3.3.6",
+    "ejs": "^2.3.4",
+    "es6-promise": "^3.0.2",
+    "es6-shim": "^0.33.3",
+    "express": "^4.13.3",
+    "mongodb": "^2.1.0",
+    "mongoose": "^4.3.1",
+    "reflect-metadata": "0.1.2",
+    "rxjs": "5.0.0-beta.0",
+    "systemjs": "0.19.6",
+    "zone.js": "0.5.10"
+  }
+}
