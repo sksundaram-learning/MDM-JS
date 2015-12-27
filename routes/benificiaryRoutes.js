@@ -18,6 +18,18 @@ router.get('/:id', function (req, res) {
 	});
 });
 
+router.get('/:id/contracts', function(req, res){
+	benificiaryServices.getAllContracts(req.params.id, function(err, data){
+		if(err){
+			res.status(501).json(err);
+		}else if(data == null){
+			res.status(404).json(data);
+		}else{
+			res.json(data);
+		}
+	})
+});
+
 router.post('/', function(req, res){
 	benificiaryServices.create(req.body, function(err, data){
 		res.json(data);
