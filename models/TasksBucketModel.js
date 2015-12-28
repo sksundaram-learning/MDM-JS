@@ -14,7 +14,7 @@ var TasksBucketModel = new Schema({
     id    											: ObjectId,
     habitation_subscribers_id  	: [Number],
 		car_subscribers_id  				: [Number],
-		benificiary_id  						: [Number]
+		benificiaries_id  						: [Number]
 }, {strict: true});
 
 /*below we define a custom behaviour.
