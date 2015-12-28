@@ -2,6 +2,7 @@ var express = require('express');
 var benificiaryRoutes = require("./routes/benificiaryRoutes");
 var carSubscriberRoutes = require("./routes/carSubscriberRoutes");
 var habitationSubscriberRoutes = require("./routes/habitationSubscriberRoutes");
+var tasksBucketRoutes = require("./routes/tasksBucketRoutes");
 var toolRoutes = require("./routes/toolRoutes");
 var bodyParser = require("body-parser");
 
@@ -17,6 +18,7 @@ app.set('view engine', 'ejs');
 app.use("/benificiaries", benificiaryRoutes);
 app.use("/car_subscribers", carSubscriberRoutes);
 app.use("/habitation_subscribers", habitationSubscriberRoutes);
+app.use("/tools/tasksBucket", tasksBucketRoutes);
 app.use("/tools", toolRoutes);
 
 
