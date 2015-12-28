@@ -15,7 +15,7 @@ exports.getAllContracts = function(id, callback){
 };
 
 exports.getAll = function(offset, limit, callback){
-	CustomerModel.find({__disabled : {$ne : true}}).limit(limit).skip(offset).exec(callback);
+	CustomerModel.find({__disabled : {$ne : true}, benificiary_id : {$ne : null}}).limit(limit).skip(offset).exec(callback);
 };
 
 exports.update = function(id, newValues, callback){

@@ -18,6 +18,7 @@ var ContractModel = new Schema({
     address     										: String,
     zip_code      									: String,
 		details													: String,
+		//car_brand												: String,
 		__v															: {type: Number, default:0}
 },  {strict: true});
 
