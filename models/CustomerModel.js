@@ -11,6 +11,15 @@ if(!connection.readyState){
 var Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
 
+
+var filter = function (doc, ret, options) {
+  Object.keys(ret).forEach(function (element, index) {
+    if(doc.schema.paths[element] == undefined){
+      delete ret[element];
+    }
+  });
+}
+
 var CustomerModel = new Schema({
     id    											: ObjectId,
     benificiary_id  						: Number,
@@ -31,13 +40,15 @@ var CustomerModel = new Schema({
 /*below we define a custom behaviour.
 We want that each time a physical document is retrived from MongoDB we delete the properties from the instance returned to the client
 */
-if (!CustomerModel.options.toObject) CustomerModel.options.toObject = {};
-CustomerModel.options.toObject.transform = function (doc, ret, options) {
-  Object.keys(ret).forEach(function (element, index) {
-    if(doc.schema.paths[element] == undefined){
-      delete ret[element];
-    }
-  });
+if (!CustomerModel.options.toObject){
+	CustomerModel.options.toObject = {};
 }
+if (!CustomerModel.options.toJSON){
+	CustomerModel.options.toJSON = {};
+}
+CustomerModel.options.toObject.transform = filter;
+CustomerModel.options.toJSON.transform = filter;
+
+
 
 module.exports = mongoose.model('CustomerModel', CustomerModel);
