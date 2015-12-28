@@ -1,7 +1,7 @@
-var CustomerModel = require("./../models/CustomerModel");
+var CarSubscriberModel = require("./../models/CarSubscriberModel");
 
 exports.get = function(id, callback){
-	CustomerModel.findOne({car_subscriber_id : id, __disabled : {$ne : true}}, callback);
+	CarSubscriberModel.findOne({car_subscriber_id : id, __disabled : {$ne : true}}, callback);
 };
 
 exports.getAllContracts = function(id, callback){
@@ -15,7 +15,7 @@ exports.getAllContracts = function(id, callback){
 };
 
 exports.getAll = function(offset, limit, callback){
-	CustomerModel.find({__disabled : {$ne : true}, car_subscriber_id : {$ne : null}}).limit(limit).skip(offset).exec(callback);
+	CarSubscriberModel.find({__disabled : {$ne : true}, car_subscriber_id : {$ne : null}}).limit(limit).skip(offset).exec(callback);
 };
 
 exports.update = function(id, newValues, callback){
@@ -33,7 +33,7 @@ exports.update = function(id, newValues, callback){
 			});
 			dataCopy.__disabled = true;
 
-			var backupVersion = new CustomerModel(dataCopy);
+			var backupVersion = new CarSubscriberModel(dataCopy);
 			backupVersion.save(function(err, savedBackup){
 				savedBackup.__v = dataCopy.__v;//By default the __v equals to 0 because we just created it. this is why we have to do 2 saves
 				savedBackup.save();
@@ -50,11 +50,11 @@ exports.update = function(id, newValues, callback){
 };
 
 exports.getHistory = function(id, callback){
-	CustomerModel.find({car_subscriber_id : id}, callback);
+	CarSubscriberModel.find({car_subscriber_id : id}, callback);
 };
 
 exports.rollback = function(id, versionNumber, callback){
-	CustomerModel.findOne({car_subscriber_id : id, __v : versionNumber}, function(err, data){
+	CarSubscriberModel.findOne({car_subscriber_id : id, __v : versionNumber}, function(err, data){
 		if(err || data == null){
 			callback(err, data);
 		}else{
@@ -75,10 +75,10 @@ exports.rollback = function(id, versionNumber, callback){
 };
 
 exports.create = function(values, callback){
-	var instanceToSave = new CustomerModel(values);
+	var instanceToSave = new CarSubscriberModel(values);
 	instanceToSave.save(callback);
 }
 
 exports.delete = function(id, callback){
-	CustomerModel.remove({car_subscriber_id : id}, callback);
+	CarSubscriberModel.remove({car_subscriber_id : id}, callback);
 };

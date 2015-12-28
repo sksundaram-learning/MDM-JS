@@ -1,7 +1,7 @@
-var BenificiaryModel = require("./../models/BenificiaryModel");
+var HabitationSubscriberModel = require("./../models/HabitationSubscriberModel");
 
 exports.get = function(id, callback){
-	BenificiaryModel.findOne({benificiary_id : id, __disabled : {$ne : true}}, callback);
+	HabitationSubscriberModel.findOne({habitation_subscriber_id : id, __disabled : {$ne : true}}, callback);
 };
 
 exports.getAllContracts = function(id, callback){
@@ -15,11 +15,11 @@ exports.getAllContracts = function(id, callback){
 };
 
 exports.getAll = function(offset, limit, callback){
-	BenificiaryModel.find({__disabled : {$ne : true}, benificiary_id : {$ne : null}}).limit(limit).skip(offset).exec(callback);
+	HabitationSubscriberModel.find({__disabled : {$ne : true}, habitation_subscriber_id : {$ne : null}}).limit(limit).skip(offset).exec(callback);
 };
 
 exports.update = function(id, newValues, callback){
-	exports.get(id, function(erdata){
+	exports.get(id, function(err, data){
 
 		if(err || data == null){
 			callback(err, null);
@@ -33,7 +33,7 @@ exports.update = function(id, newValues, callback){
 			});
 			dataCopy.__disabled = true;
 
-			var backupVersion = new BenificiaryModel(dataCopy);
+			var backupVersion = new HabitationSubscriberModel(dataCopy);
 			backupVersion.save(function(err, savedBackup){
 				savedBackup.__v = dataCopy.__v;//By default the __v equals to 0 because we just created it. this is why we have to do 2 saves
 				savedBackup.save();
@@ -50,11 +50,11 @@ exports.update = function(id, newValues, callback){
 };
 
 exports.getHistory = function(id, callback){
-	BenificiaryModel.find({benificiary_id : id}, callback);
+	HabitationSubscriberModel.find({habitation_subscriber_id : id}, callback);
 };
 
 exports.rollback = function(id, versionNumber, callback){
-	BenificiaryModel.findOne({benificiary_id : id, __v : versionNumber}, function(err, data){
+	HabitationSubscriberModel.findOne({habitation_subscriber_id : id, __v : versionNumber}, function(err, data){
 		if(err || data == null){
 			callback(err, data);
 		}else{
@@ -75,10 +75,10 @@ exports.rollback = function(id, versionNumber, callback){
 };
 
 exports.create = function(values, callback){
-	var instanceToSave = new BenificiaryModel(values);
+	var instanceToSave = new HabitationSubscriberModel(values);
 	instanceToSave.save(callback);
 }
 
 exports.delete = function(id, callback){
-	BenificiaryModel.remove({benificiary_id : id}, callback);
+	HabitationSubscriberModel.remove({habitation_subscriber_id : id}, callback);
 };

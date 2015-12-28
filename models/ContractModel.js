@@ -9,14 +9,6 @@ if(!connection.readyState){
 var Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
 
-var filter = function (doc, ret, options) {
-  Object.keys(ret).forEach(function (element, index) {
-    if(doc.schema.paths[element] == undefined){
-      delete ret[element];
-    }
-  });
-}
-
 var ContractModel = new Schema({
     id    													: ObjectId,
     auto_contract_id  							: Number,
@@ -27,12 +19,20 @@ var ContractModel = new Schema({
     zip_code      									: String,
 		details													: String,
 		car_brand												: String,
+		amount													: Number,
 		__v															: {type: Number, default:0}
 },  {strict: true});
 
 /*below we define a custom behaviour.
 We want that each time a physical document is retrived from MongoDB we delete the properties from the instance returned to the client
 */
+var filter = function (doc, ret, options) {
+  Object.keys(ret).forEach(function (element, index) {
+    if(doc.schema.paths[element] == undefined){
+      delete ret[element];
+    }
+  });
+};
 if (!ContractModel.options.toObject){
 	ContractModel.options.toObject = {};
 }

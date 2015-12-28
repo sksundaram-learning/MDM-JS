@@ -11,11 +11,9 @@ if(!connection.readyState){
 var Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
 
-var CustomerModel = new Schema({
+var CarSubscriberModel = new Schema({
     id    											: ObjectId,
-    benificiary_id  						: Number,
     car_subscriber_id  					: Number,
-    habitation_subscriber_id  	: Number,
     name     										: String,
     surname      								: String,
     telephone      							: String,
@@ -38,13 +36,13 @@ var filter = function (doc, ret, options) {
     }
   });
 }
-if (!CustomerModel.options.toObject){
-	CustomerModel.options.toObject = {};
+if (!CarSubscriberModel.options.toObject){
+	CarSubscriberModel.options.toObject = {};
 }
-if (!CustomerModel.options.toJSON){
-	CustomerModel.options.toJSON = {};
+if (!CarSubscriberModel.options.toJSON){
+	CarSubscriberModel.options.toJSON = {};
 }
-CustomerModel.options.toObject.transform = filter;
-CustomerModel.options.toJSON.transform = filter;
+CarSubscriberModel.options.toObject.transform = filter;
+CarSubscriberModel.options.toJSON.transform = filter;
 
-module.exports = mongoose.model('CustomerModel', CustomerModel, 'customermodels');
+module.exports = mongoose.model('CarSubscriberModel', CarSubscriberModel, 'customermodels');
