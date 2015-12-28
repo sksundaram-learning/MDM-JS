@@ -26,6 +26,18 @@ var CustomerModel = new Schema({
 		contracts										: [ContractModel.schema],
 		__v													: {type: Number, default:0},
 		__disabled									: {type: Boolean, default: false}
-});
+}, {strict: true});
+
+/*below we define a custom behaviour.
+We want that each time a physical document is retrived from MongoDB we delete the properties from the instance returned to the client
+*/
+if (!CustomerModel.options.toObject) CustomerModel.options.toObject = {};
+CustomerModel.options.toObject.transform = function (doc, ret, options) {
+  Object.keys(ret).forEach(function (element, index) {
+    if(doc.schema.paths[element] == undefined){
+      delete ret[element];
+    }
+  });
+}
 
 module.exports = mongoose.model('CustomerModel', CustomerModel);
