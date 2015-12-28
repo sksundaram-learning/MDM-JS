@@ -3,7 +3,11 @@ var router = express.Router();
 var benificiaryServices = require("./../services/benificiaryServices");
 
 router.get('/', function (req, res) {
-	benificiaryServices.getAll(function(err, values){
+
+	var limit = (req.query.limit == undefined) ? 50 : req.query.limit;
+	var offset = (req.query.offset == undefined) ? 0 : req.query.offset;
+
+	benificiaryServices.getAll(offset, limit, function(err, values){
 		res.json(values);
 	});
 });
