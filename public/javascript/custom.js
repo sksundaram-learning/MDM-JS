@@ -1,5 +1,4 @@
 function loadTasks(){
-  console.log("I'm loading in ajax tasks");
   $.get( "/tools/tasksBucket", function( data ) {
     for(var i = 0; i < data.length; i++){
       var benificiaries_id = data[i].benificiaries_id;
@@ -19,7 +18,24 @@ function loadTasks(){
 }
 
 function loadSpecificTask(benificiaries_id, car_subscribers_id, habitation_subscribers_id){
-  console.log(benificiaries_id);
-  console.log(car_subscribers_id);
-  console.log(habitation_subscribers_id);
+  console.log("Je suis censé lancer une requete AJAX");
+  $.get( "/benificiaries/" + benificiaries_id[0], function( data ) {
+    console.log(data);
+    addReadOnlyForm("/benificiaries/" + benificiaries_id[0], data);
+  });
+}
+
+function addReadOnlyForm(url, values){
+  var stringToAdd = '<form action="'+url+'" method="PUT">';
+  Object.keys(values).forEach(function (element, index) {
+    stringToAdd = `
+        <div class="form-group">
+          <label for="`+element+`">`+element+`</label>
+          <input enabled="false" type="text" class="form-control" id="`+element+`" placeholder="`+element+`" value="`+values[element]+`">
+        </div>
+    `;
+  });
+
+  stringToAdd += '<button type="submit" class="btn btn-default">Submit</button></form>';
+  $("#formsToMerge").append(stringToAdd);
 }
