@@ -1,4 +1,9 @@
 var CustomerModel = require("./../models/CustomerModel");
+var CarSubscriberModel = require("./../models/CarSubscriberModel");
+var HabitationSubscriberModel = require("./../models/HabitationSubscriberModel");
+var BenificiaryModel = require("./../models/BenificiaryModel");
+var CustomerModel = require("./../models/CustomerModel");
+var async = require('async');
 
 exports.get = function(id, callback){
 	CustomerModel.findOne({_id : id, __disabled : {$ne : true}}, callback);
@@ -19,7 +24,7 @@ exports.getAll = function(offset, limit, callback){
 };
 
 exports.update = function(id, newValues, callback){
-	exports.get(id, function(erdata){
+	exports.get(id, function(err,data){
 
 		if(err || data == null){
 			callback(err, null);
@@ -81,4 +86,32 @@ exports.create = function(values, callback){
 
 exports.delete = function(id, callback){
 	CustomerModel.remove({_id : id}, callback);
+};
+
+exports.merge = function(idsToMerge, v360customer, callback){
+	var parallelUpdates = new Array();
+	if(idsToMerge.benificiaries_id){
+		for(var i = 0; i < idsToMerge.benificiaries_id.length; i++){
+			parallelUpdates.push(BenificiaryModel.update.bind(null, idsToMerge.benificiaries_id[i], {__disabled : true}));
+		}
+	}
+	if(idsToMerge.car_subscribers_id){
+		for(var i = 0; i < idsToMerge.car_subscribers_id.length; i++){
+			parallelUpdates.push(CarSubscriberModel.update.bind(null, idsToMerge.car_subscribers_id[i], {__disabled : true}));
+		}
+	}
+	if(idsToMerge.habitation_subscribers_id){
+		for(var i = 0; i < idsToMerge.habitation_subscribers_id.length; i++){
+			parallelUpdates.push(HabitationSubscriberModel.update.bind(null, idsToMerge.habitation_subscribers_id[i], {__disabled : true}));
+		}
+	}
+
+	async.parallel(parallelUpdates, function(err, results){
+		if(err){
+			callback(err, null);
+		}else{
+			exports.update(v360customer._id, v360customer, callback);
+		}
+	});
+
 };

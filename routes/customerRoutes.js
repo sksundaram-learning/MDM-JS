@@ -86,4 +86,10 @@ router.post('/history/:id/rollback', function(req, res){
 	});
 });
 
+router.post('/merge', function(req, res){
+	customerServices.merge(req.body.idsToMerge, req.body.v360customer, function(err, data){
+		res.json(data);
+	});
+});
+
 module.exports = router;

@@ -1,3 +1,20 @@
+$.fn.serializeObject = function()
+{
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function() {
+        if (o[this.name] !== undefined) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+};
+
 var v360CustomerModel = {};
 var idsToMerge = {
   benificiaries_id:[],
@@ -29,7 +46,7 @@ var updateV360CustomerModel = function(data){
     if(typeof valueToPrint == 'object'){
       stringToAdd += '<textarea id="'+element+'" class="form-control" rows="3" name='+element+'>'+JSON.stringify(valueToPrint)+'</textarea>';
     }else{
-      stringToAdd += '<input id="'+element+'" type="text" class="form-control" placeholder="'+element+'" value="'+valueToPrint+'">';
+      stringToAdd += '<input id="'+element+'" name="'+element+'" type="text" class="form-control" placeholder="'+element+'" value="'+valueToPrint+'">';
     }
     stringToAdd += '</div>';
   });
@@ -118,7 +135,26 @@ var loadInfoInV360Form = function(data){
 
 var mergeCustomers = function(event){
   event.preventDefault();
-  console.log("I should submit");
+  var formValues= $("#mergeForm").serializeArray();
+  for(var i = 0; i < formValues.length; i++){
+    var value = null;
+    try{
+      value = JSON.parse(formValues[i].value);
+    }catch(e){
+      value = formValues[i].value;
+    }
+    v360CustomerModel[formValues[i].name] = value;
+  }
+  console.log(v360CustomerModel);
+
+  $.ajax({
+    type: "POST",
+    url: "/customers/merge",
+    contentType:"application/json; charset=utf-8",
+    data: JSON.stringify({idsToMerge: idsToMerge, v360customer: v360CustomerModel}),
+    dataType: "json"
+  });
+
 
   return false;
 }

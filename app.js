@@ -24,4 +24,10 @@ app.use("/tools/tasksBucket", tasksBucketRoutes);
 app.use("/tools", toolRoutes);
 
 
+app.post('/test', function(req, res){
+  console.log(req.body.x);//Should only trace one value but instead execute maliscious code.
+  console.log(req.body);
+  res.json("ok");
+});
+
 var server = app.listen(80);
