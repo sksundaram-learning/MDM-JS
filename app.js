@@ -1,4 +1,5 @@
 var express = require('express');
+var customerRoutes = require("./routes/customerRoutes");
 var benificiaryRoutes = require("./routes/benificiaryRoutes");
 var carSubscriberRoutes = require("./routes/carSubscriberRoutes");
 var habitationSubscriberRoutes = require("./routes/habitationSubscriberRoutes");
@@ -15,6 +16,7 @@ app.use('/node_modules', express.static('node_modules'));
 
 app.set('view engine', 'ejs');
 
+app.use("/customers", customerRoutes);
 app.use("/benificiaries", benificiaryRoutes);
 app.use("/car_subscribers", carSubscriberRoutes);
 app.use("/habitation_subscribers", habitationSubscriberRoutes);
